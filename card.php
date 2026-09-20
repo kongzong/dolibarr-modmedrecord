@@ -411,10 +411,11 @@ if ($action == 'create') {
 		// Extension point for modPrescription and later modules (spec §3.5)
 		$parameters = array('object' => $object);
 		$reshook = $hookmanager->executeHooks('printMedRecordCard', $parameters, $object, $action);
-		if ($reshook > 0) {
-			print $hookmanager->resPrint;
-		} else {
-			print $hookmanager->resPrint;
+		if ($reshook < 0) {
+			setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+		}
+		print $hookmanager->resPrint;
+		if (trim((string) $hookmanager->resPrint) === '') {
 			print '<div class="opacitymedium" style="margin-top:8px;">'.$langs->trans("MedRecordNoPrescriptionModule").'</div>';
 		}
 		print '</div></div><div class="clearboth"></div>';

@@ -3,7 +3,7 @@
 Dolibarr 22.0.x 外部模块：面向中医馆/中西医结合诊所的门诊病历。零 core 修改。
 医疗模块群一期第二个模块，依赖 [modPatient](https://github.com/kongzong/dolibarr-modpatient) ≥ 0.1.1。
 
-当前版本：**0.1.0**（2026-09-20 四阶段全部验收通过，标签 `v0.1.0`）。规格见 [docs/spec-medrecord-v0.1.md](docs/spec-medrecord-v0.1.md)。
+当前版本：**0.1.1**（2026-09-20，病历页 hook 占位提示仅在无模块输出时显示，为 modPrescription 注入准备；0.1.0 四阶段验收版，标签 `v0.1.0`）。规格见 [docs/spec-medrecord-v0.1.md](docs/spec-medrecord-v0.1.md)。
 
 ## 设计要点
 
