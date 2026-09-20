@@ -1,0 +1,36 @@
+-- modMedRecord: one outpatient visit record. Never deleted: status 9 = voided
+-- with reason/user/date kept (spec §5.1). Signed records are locked (§3.3).
+
+CREATE TABLE llx_medrecord(
+	rowid				integer AUTO_INCREMENT PRIMARY KEY NOT NULL,
+	entity				integer DEFAULT 1 NOT NULL,
+	ref					varchar(32) NOT NULL,
+	fk_patient			integer NOT NULL,
+	fk_doctor			integer NOT NULL,
+	fk_department		integer DEFAULT NULL,
+	visit_date			datetime NOT NULL,
+	visit_type			smallint DEFAULT 1 NOT NULL,
+	chief_complaint		text DEFAULT NULL,
+	present_illness		text DEFAULT NULL,
+	past_history_snapshot	text DEFAULT NULL,
+	tongue				varchar(255) DEFAULT NULL,
+	pulse				varchar(255) DEFAULT NULL,
+	exam_note			text DEFAULT NULL,
+	tcm_disease_code	varchar(32) DEFAULT NULL,
+	tcm_disease_label	varchar(128) DEFAULT NULL,
+	tcm_syndrome_code	varchar(32) DEFAULT NULL,
+	tcm_syndrome_label	varchar(128) DEFAULT NULL,
+	treatment_principle	text DEFAULT NULL,
+	advice				text DEFAULT NULL,
+	fk_ref_medrecord	integer DEFAULT NULL,
+	status				smallint DEFAULT 0 NOT NULL,
+	date_signed			datetime DEFAULT NULL,
+	fk_user_sign		integer DEFAULT NULL,
+	void_reason			varchar(255) DEFAULT NULL,
+	date_void			datetime DEFAULT NULL,
+	fk_user_void		integer DEFAULT NULL,
+	fk_user_creat		integer DEFAULT NULL,
+	fk_user_modif		integer DEFAULT NULL,
+	date_creation		datetime NOT NULL,
+	tms					timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=innodb;
