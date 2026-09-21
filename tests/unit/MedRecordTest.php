@@ -180,6 +180,7 @@ class MedRecordTest extends TestCase
 		$this->assertStringContainsString("executeHooks('printMedRecordCard'", $card, 'extension point for modPrescription');
 		$this->assertStringContainsString("initHooks(array('medrecordcard'))", $card);
 		$this->assertStringContainsString("trim((string) \$hookmanager->resPrint) === ''", $card, '0.1.1: placeholder only when no module printed anything');
+		$this->assertStringContainsString("'medrecord');", $card, '0.1.2: context bar highlights the medical records tab and carries a breadcrumb');
 		$this->assertStringContainsString('patient_select_html(', $card, 'patient picker from modPatient 0.1.1');
 		$this->assertStringContainsString('newToken()', $card);
 

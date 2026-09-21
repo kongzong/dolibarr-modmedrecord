@@ -64,7 +64,7 @@ llxHeader('', $langs->trans("MedRecordTab"));
 $head = patient_prepare_head($patient);
 print dol_get_fiche_head($head, 'medrecord', $langs->trans("PatientTab"), -1, 'user');
 
-print patient_summary_banner(patient_get_summary($db, $patient->id));
+print patient_summary_banner(patient_get_summary($db, $patient->id), array(), 'medrecord');
 
 if ($user->hasRight('medrecord', 'write')) {
 	print '<div class="tabsAction">';

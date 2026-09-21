@@ -324,7 +324,7 @@ if ($action == 'create') {
 	print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("MedRecordPatient").'</td><td>';
 	if ($draft->fk_patient > 0) {
 		print '<input type="hidden" name="fk_patient" value="'.((int) $draft->fk_patient).'">';
-		print patient_summary_banner(patient_get_summary($db, $draft->fk_patient));
+		print patient_summary_banner(patient_get_summary($db, $draft->fk_patient), array(array('label' => $langs->trans("MedRecordTab"), 'url' => dol_buildpath('/medrecord/patient_tab.php', 1).'?id='.((int) $draft->fk_patient)), array('label' => $langs->trans("MedRecordNew"))), 'medrecord');
 	} else {
 		print patient_select_html($db, 'fk_patient', GETPOSTINT('fk_patient'));
 	}
@@ -348,7 +348,7 @@ if ($action == 'create') {
 	print '<div class="inline-block floatright">'.$linkback.'</div>';
 	print '<div class="clearboth"></div></div>';
 	print '<div class="underbanner clearboth"></div>';
-	print patient_summary_banner($summary);
+	print patient_summary_banner($summary, array(array('label' => $langs->trans("MedRecordTab"), 'url' => dol_buildpath('/medrecord/patient_tab.php', 1).'?id='.((int) $object->fk_patient)), array('label' => $object->ref)), 'medrecord');
 
 	if ($action == 'edit' && $object->canEdit($user)) {
 		print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'" name="formmedrecord">';
