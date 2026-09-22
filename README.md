@@ -3,7 +3,7 @@
 Dolibarr 22.0.x 外部模块：面向中医馆/中西医结合诊所的门诊病历。零 core 修改。
 医疗模块群一期第二个模块，依赖 [modPatient](https://github.com/kongzong/dolibarr-modpatient) ≥ 0.1.1。
 
-当前版本：**0.1.2**（2026-09-21，记录页与新建页使用 modPatient 0.1.3 的患者上下文条：快捷 Tab + 面包屑"患者 › 诊疗记录 › JZ-…"；0.1.1 hook 占位修正；0.1.0 四阶段验收版）。规格见 [docs/spec-medrecord-v0.1.md](docs/spec-medrecord-v0.1.md)。
+当前版本：**0.1.3**（2026-09-21，REST 修复：业务类 `MedRecord` 与 API 类 `Medrecord` 只差大小写，PHP 类名大小写不敏感导致 REST 调用 fatal；业务类改名 `MedicalRecord`，文件改为 `class/medicalrecord.class.php`，URL 与端点不变。0.1.2 记录页使用 modPatient 0.1.3 上下文条；0.1.1 hook 占位修正；0.1.0 四阶段验收版）。规格见 [docs/spec-medrecord-v0.1.md](docs/spec-medrecord-v0.1.md)。
 
 ## 设计要点
 
@@ -31,11 +31,13 @@ Dolibarr 22.0.x 外部模块：面向中医馆/中西医结合诊所的门诊病
 | 1 骨架 | descriptor、4 张表 + 3 字典 + 种子、权限、菜单、患者 Tab（时间线）、设置页常量、测试 | 已完成（2026-09-20 UI 验收通过） |
 | 2 记录与编号 | `MedRecord` 类（状态机、审计含字段级 diff）、`MedRecordNumbering` + 10 单元 + 6 并发集成测试、记录页（ICD-10 自动补全芯片、签署/作废/复诊引用）、列表 | 已完成（2026-09-20 UI 验收通过） |
 | 3 字典导入与打印 | `MedRecordDictImport`（按列形态解析、幂等 upsert、UTF-8/GBK）+ 6 单元测试、设置页导入表单、A4 打印视图（水印页脚 + MEDRECORD_PRINT 审计） | 已完成（2026-09-20 UI 验收通过：2.1 万行导入幂等、搜索命中、打印留痕） |
-| 4 集成面 | REST 7 端点、停用→启用全流程、`v0.1.0` | 已完成（2026-09-20 REST 权限矩阵与停用→启用验收通过） |
+| 4 集成面 | REST 7 端点、停用→启用全流程、`v0.1.0` | 已完成（2026-09-20 REST 权限矩阵与停用→启用验收通过；2026-09-21 修复类名冲突 fatal 后 admin token 全端点复测通过） |
+
+> 0.1.3 修复类名冲突后 REST URL、端点、行为均不变；业务类新名 `MedicalRecord`。
 
 ## REST API
 
-所有端点需 `DOLAPIKEY`。状态机与权限规则和页面完全一致（同一个 `MedRecord` 类）；不返回患者证件号。
+所有端点需 `DOLAPIKEY`。状态机与权限规则和页面完全一致（同一个 `MedicalRecord` 业务类）；不返回患者证件号。URL 前缀 = 模块目录名（core 约束），中文查询参数需 URL 编码。
 
 ```
 GET  /api/index.php/medrecord/records?q=&patient=&doctor=&status=&from=&to=&limit=&page=   # read；status 缺省为非作废

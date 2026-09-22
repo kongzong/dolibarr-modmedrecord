@@ -93,14 +93,14 @@
 
 - descriptor `module_parts['hooks'] = array('medrecordcard')`，`card.php` 在头部、诊断区下方、动作栏各 `executeHooks('printMedRecordCard'...)` 一次，上下文传 `$object`
 - `lib/medrecord.lib.php`：`medrecord_get_last_signed($db, $fkPatient)`、`medrecord_timeline($db, $fkPatient, $limit)`、`medrecord_status_label($status)`
-- REST（类 `Medrecord`）：
+- REST（类 `Medrecord`；勘误 2026-09-21：v0.1.2 及之前业务类与 API 类只差大小写（`MedRecord`/`Medrecord`），PHP 类名大小写不敏感导致 REST fatal。业务类改名 `MedicalRecord`（文件 `medicalrecord.class.php`），API 类 `Medrecord` 保持不变。机制详见 modPrescription spec §3.7 "REST 命名约束"）：
   - `GET medrecord/records?patient=&doctor=&status=&from=&to=`（read）
   - `GET medrecord/records/{id}`（read，写 MEDRECORD_READ 审计）
   - `POST medrecord/records`（write，建草稿）
   - `PUT medrecord/records/{id}`（write，改草稿）
   - `POST medrecord/records/{id}/sign`（sign）
   - `POST medrecord/records/{id}/void`（void，body `{reason}`）
-  - `GET medrecord/dictionaries/{name}?q=`（read；name ∈ icd10/tcm_disease/tcm_syndrome，供客户端自动补全）
+  - `GET medrecord/dictionaries/{name}?q=`（read；name ∈ icd10/tcm_disease/tcm_syndrome，供客户端自动补全；中文 q 需 URL 编码）
 
 ## 4. 明确不做（V0.1）
 

@@ -16,7 +16,7 @@
  */
 
 /**
- * \file    htdocs/custom/medrecord/class/medrecord.class.php
+ * \file    htdocs/custom/medrecord/class/medicalrecord.class.php
  * \ingroup medrecord
  * \brief   One outpatient visit record with the draft -> signed -> voided
  *          state machine (spec §3.3). Never deleted. Every write is audited
@@ -29,9 +29,9 @@ dol_include_once('/medrecord/lib/medrecord.lib.php');
 dol_include_once('/patient/lib/patient.lib.php');
 
 /**
- * Class MedRecord
+ * Class MedicalRecord
  */
-class MedRecord extends CommonObject
+class MedicalRecord extends CommonObject
 {
 	public $element = 'medrecord';
 	public $table_element = 'medrecord';
@@ -436,7 +436,7 @@ class MedRecord extends CommonObject
 
 		// Field-level diff against the stored row, for the audit trail
 		$changes = array();
-		$old = new MedRecord($this->db);
+		$old = new MedicalRecord($this->db);
 		if ($old->fetch($this->id) > 0) {
 			$changes = $this->diffAgainst($old);
 		}
@@ -555,11 +555,11 @@ class MedRecord extends CommonObject
 	 * Prefill a new follow-up draft from this (signed) record: diagnoses,
 	 * TCM disease/syndrome, treatment principle; fk_ref_medrecord set.
 	 *
-	 * @return	MedRecord	Unsaved draft
+	 * @return	MedicalRecord	Unsaved draft
 	 */
 	public function newFollowUp()
 	{
-		$next = new MedRecord($this->db);
+		$next = new MedicalRecord($this->db);
 		$next->fk_patient = $this->fk_patient;
 		$next->fk_doctor = $this->fk_doctor;
 		$next->fk_department = $this->fk_department;
@@ -646,10 +646,10 @@ class MedRecord extends CommonObject
 	 * for the audit trail: field => {old, new}. Long texts are truncated to
 	 * keep the audit row readable; diagnoses compared as "code label" lists.
 	 *
-	 * @param	MedRecord	$old	Stored copy
+	 * @param	MedicalRecord	$old	Stored copy
 	 * @return	array<string,array{old:string,new:string}>
 	 */
-	public function diffAgainst(MedRecord $old)
+	public function diffAgainst(MedicalRecord $old)
 	{
 		$changes = array();
 		$norm = function ($v) {

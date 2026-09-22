@@ -16,17 +16,17 @@
  */
 
 /**
- *  \defgroup   medrecord     Module MedRecord
+ *  \defgroup   medrecord     Module MedicalRecord
  *  \brief      Outpatient medical records (TCM + western) for the clinic suite.
  *
  *  \file       htdocs/custom/medrecord/core/modules/modMedRecord.class.php
  *  \ingroup    medrecord
- *  \brief      Description and activation file for module MedRecord
+ *  \brief      Description and activation file for module MedicalRecord
  */
 include_once DOL_DOCUMENT_ROOT.'/core/modules/DolibarrModules.class.php';
 
 /**
- *  Description and activation class for module MedRecord
+ *  Description and activation class for module MedicalRecord
  */
 class modMedRecord extends DolibarrModules
 {
@@ -57,7 +57,7 @@ class modMedRecord extends DolibarrModules
 		$this->editor_name = 'modMedRecord';
 		$this->editor_url = 'https://github.com/kongzong/dolibarr-modmedrecord';
 
-		$this->version = '0.1.2';
+		$this->version = '0.1.3';
 
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 

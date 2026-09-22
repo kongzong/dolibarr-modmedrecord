@@ -39,7 +39,7 @@ if (!$res) {
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.form.class.php';
 dol_include_once('/patient/lib/patient.lib.php');
 dol_include_once('/medrecord/lib/medrecord.lib.php');
-dol_include_once('/medrecord/class/medrecord.class.php');
+dol_include_once('/medrecord/class/medicalrecord.class.php');
 
 /**
  * @var Conf $conf
@@ -64,7 +64,7 @@ if (!$canRead) {
 }
 
 $form = new Form($db);
-$object = new MedRecord($db);
+$object = new MedicalRecord($db);
 $hookmanager->initHooks(array('medrecordcard'));
 
 if ($id > 0) {
@@ -86,10 +86,10 @@ $tcmSyndromes = medrecord_dict_options($db, 'c_medrecord_tcm_syndrome');
 /**
  * Read the shared form fields into the object.
  *
- * @param	MedRecord	$o	Target
+ * @param	MedicalRecord	$o	Target
  * @return	void
  */
-function medrecord_read_form(MedRecord $o)
+function medrecord_read_form(MedicalRecord $o)
 {
 	$o->fk_doctor = GETPOSTINT('fk_doctor');
 	$o->fk_department = GETPOSTINT('fk_department');
@@ -126,7 +126,7 @@ if ($action == 'add' && $canWrite) {
 		header("Location: ".dol_buildpath('/medrecord/list.php', 1));
 		exit;
 	}
-	$object = new MedRecord($db);
+	$object = new MedicalRecord($db);
 	$object->fk_patient = $fkPatientParam;
 	$object->fk_ref_medrecord = $refFrom > 0 ? $refFrom : null;
 	medrecord_read_form($object);
@@ -198,11 +198,11 @@ llxHeader('', $title);
 /**
  * Editable rows shared by create/edit.
  *
- * @param	MedRecord	$o			Object
+ * @param	MedicalRecord	$o			Object
  * @param	bool		$isCreate	Create mode
  * @return	void
  */
-function medrecord_print_form_rows(MedRecord $o, $isCreate)
+function medrecord_print_form_rows(MedicalRecord $o, $isCreate)
 {
 	global $langs, $form, $user, $doctors, $departments, $tcmDiseases, $tcmSyndromes;
 
@@ -307,7 +307,7 @@ if ($action == 'create') {
 	if (!$canWrite) {
 		accessforbidden();
 	}
-	$draft = $prefill ? $prefill : new MedRecord($db);
+	$draft = $prefill ? $prefill : new MedicalRecord($db);
 	if ($fkPatientParam > 0) {
 		$draft->fk_patient = $fkPatientParam;
 	}
@@ -375,7 +375,7 @@ if ($action == 'create') {
 		print '<tr><td>'.$langs->trans("MedRecordVisitDate").'</td><td>'.dol_print_date($object->visit_date, 'dayhour').'</td></tr>';
 		print '<tr><td>'.$langs->trans("MedRecordVisitType").'</td><td>'.$langs->trans($object->visit_type == 2 ? "MedRecordVisitFollow" : "MedRecordVisitFirst");
 		if ($object->fk_ref_medrecord) {
-			$refRec = new MedRecord($db);
+			$refRec = new MedicalRecord($db);
 			if ($refRec->fetch($object->fk_ref_medrecord) > 0) {
 				print ' <span class="opacitymedium">('.$langs->trans("MedRecordFollowFrom").' '.$refRec->getNomUrl(0).')</span>';
 			}

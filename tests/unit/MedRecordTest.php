@@ -146,13 +146,13 @@ class MedRecordTest extends TestCase
 	}
 
 	/**
-	 * Phase 2: MedRecord class state machine, transaction shape, audit
+	 * Phase 2: MedicalRecord class state machine, transaction shape, audit
 	 * actions, no delete of the record row; pages and AJAX gated.
 	 */
 	public function testRecordClassAndPages()
 	{
-		$cls = file_get_contents(__DIR__.'/../../class/medrecord.class.php');
-		$this->assertStringContainsString('class MedRecord extends CommonObject', $cls);
+		$cls = file_get_contents(__DIR__.'/../../class/medicalrecord.class.php');
+		$this->assertStringContainsString('class MedicalRecord extends CommonObject', $cls);
 		$this->assertStringContainsString('new MedRecordNumbering($this->db)', $cls, 'number reserved on the same transaction');
 		$this->assertStringContainsString('$this->db->begin();', $cls);
 		foreach (array("'MEDRECORD_CREATE'", "'MEDRECORD_MODIFY'", "'MEDRECORD_MODIFY_AFTER_SIGN'", "'MEDRECORD_SIGN'", "'MEDRECORD_VOID'") as $a) {

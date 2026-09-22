@@ -25,12 +25,12 @@ use Luracast\Restler\RestException;
  *          exposes the patient's ID number.
  */
 
-dol_include_once('/medrecord/class/medrecord.class.php');
+dol_include_once('/medrecord/class/medicalrecord.class.php');
 dol_include_once('/medrecord/lib/medrecord.lib.php');
 dol_include_once('/patient/lib/patient.lib.php');
 
 /**
- * API class for MedRecord module
+ * API class for MedicalRecord module
  *
  * @access protected
  * @class  DolibarrApiAccess {@requires user,external}
@@ -66,7 +66,7 @@ class Medrecord extends DolibarrApi
 	 * @param	string	$to			Visit date to (YYYY-MM-DD)
 	 * @param	int		$limit		Page size (max 100)
 	 * @param	int		$page		Page (0-based)
-	 * @return	array{total:int,rows:array<int,array<string,mixed>>}
+	 * @return	array		Paginated list: total + rows
 	 * @throws RestException 403 Not allowed
 	 */
 	public function index($q = '', $patient = 0, $doctor = 0, $status = -1, $from = '', $to = '', $limit = 25, $page = 0)
@@ -84,7 +84,7 @@ class Medrecord extends DolibarrApi
 			'from' => $from !== '' ? $this->dateToTs($from, false) : 0,
 			'to' => $to !== '' ? $this->dateToTs($to, true) : 0,
 		);
-		$dao = new MedRecord($this->db);
+		$dao = new MedicalRecord($this->db);
 		$result = $dao->search($filters, $limit, $limit * $page);
 		if ($result === null) {
 			throw new RestException(500, 'Search failed');
@@ -152,7 +152,7 @@ class Medrecord extends DolibarrApi
 			throw new RestException(403);
 		}
 		$data = is_array($request_data) ? $request_data : array();
-		$rec = new MedRecord($this->db);
+		$rec = new MedicalRecord($this->db);
 		$rec->fk_patient = isset($data['fk_patient']) ? (int) $data['fk_patient'] : 0;
 		$rec->fk_ref_medrecord = !empty($data['fk_ref_medrecord']) ? (int) $data['fk_ref_medrecord'] : null;
 		$this->apply($rec, $data);
@@ -251,7 +251,7 @@ class Medrecord extends DolibarrApi
 	 * @param	string	$name	icd10 | tcm_disease | tcm_syndrome
 	 * @param	string	$q		Term (code prefix or label containment)
 	 * @param	int		$limit	Max rows (max 100)
-	 * @return	array<int,array{code:string,label:string,extra_code:?string}>
+	 * @return	array		Dictionary rows: code + label
 	 * @throws RestException 403 Not allowed
 	 * @throws RestException 400 Unknown dictionary
 	 */
@@ -278,12 +278,12 @@ class Medrecord extends DolibarrApi
 
 	/**
 	 * @param	int		$id		Record rowid
-	 * @return	MedRecord
+	 * @return	MedicalRecord
 	 * @throws	RestException 404
 	 */
 	private function load($id)
 	{
-		$rec = new MedRecord($this->db);
+		$rec = new MedicalRecord($this->db);
 		if ((int) $id <= 0 || $rec->fetch((int) $id) <= 0) {
 			throw new RestException(404, 'Record not found');
 		}
@@ -293,11 +293,11 @@ class Medrecord extends DolibarrApi
 	/**
 	 * Copy editable body fields onto the record.
 	 *
-	 * @param	MedRecord	$rec	Target
+	 * @param	MedicalRecord	$rec	Target
 	 * @param	array		$data	Body
 	 * @return	void
 	 */
-	private function apply(MedRecord $rec, array $data)
+	private function apply(MedicalRecord $rec, array $data)
 	{
 		if (isset($data['fk_doctor'])) {
 			$rec->fk_doctor = (int) $data['fk_doctor'];
@@ -315,7 +315,7 @@ class Medrecord extends DolibarrApi
 			}
 			$rec->visit_date = $ts;
 		}
-		foreach (MedRecord::TEXT_FIELDS as $f) {
+		foreach (MedicalRecord::TEXT_FIELDS as $f) {
 			if (array_key_exists($f, $data) && !in_array($f, array('tcm_disease_label', 'tcm_syndrome_label'), true)) {
 				$rec->$f = $data[$f] === null ? null : (string) $data[$f];
 			}
@@ -350,10 +350,10 @@ class Medrecord extends DolibarrApi
 	/**
 	 * Full record fields. No patient identity beyond fk_patient / card no.
 	 *
-	 * @param	MedRecord	$r	Record
+	 * @param	MedicalRecord	$r	Record
 	 * @return	array<string,mixed>
 	 */
-	private function fields(MedRecord $r)
+	private function fields(MedicalRecord $r)
 	{
 		$summary = patient_get_summary($this->db, $r->fk_patient);
 		$out = array(
@@ -376,7 +376,7 @@ class Medrecord extends DolibarrApi
 			'date_void' => $r->date_void ? dol_print_date($r->date_void, 'dayhourrfc') : null,
 			'date_creation' => dol_print_date($r->date_creation, 'dayhourrfc'),
 		);
-		foreach (MedRecord::TEXT_FIELDS as $f) {
+		foreach (MedicalRecord::TEXT_FIELDS as $f) {
 			$out[$f] = $r->$f;
 		}
 		return $out;

@@ -39,7 +39,7 @@ if (!$res) {
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.form.class.php';
 dol_include_once('/patient/lib/patient.lib.php');
 dol_include_once('/medrecord/lib/medrecord.lib.php');
-dol_include_once('/medrecord/class/medrecord.class.php');
+dol_include_once('/medrecord/class/medicalrecord.class.php');
 
 /**
  * @var Conf $conf
@@ -77,7 +77,7 @@ if ($page < 0) {
 }
 $offset = $limit * $page;
 
-$dao = new MedRecord($db);
+$dao = new MedicalRecord($db);
 $result = $dao->search(array('q' => $search, 'doctor' => $searchDoctor, 'status' => $status, 'from' => $dateFrom, 'to' => $dateTo), $limit, $offset);
 if ($result === null) {
 	dol_print_error($db, $dao->error);

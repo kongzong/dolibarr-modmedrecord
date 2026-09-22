@@ -98,7 +98,7 @@ function mrTestWaitFile($id, $event, $seconds = 20)
 	throw new RuntimeException('Timed out waiting for worker '.$id.' '.$event);
 }
 
-// ---------------------------------------------------------------- worker: mirrors MedRecord::create()
+// ---------------------------------------------------------------- worker: mirrors MedicalRecord::create()
 if ($workerMode) {
 	$id = (int) $argv[4];
 	$prefixDay = $argv[5];

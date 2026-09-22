@@ -43,7 +43,7 @@ if (!$res) {
 
 dol_include_once('/patient/lib/patient.lib.php');
 dol_include_once('/medrecord/lib/medrecord.lib.php');
-dol_include_once('/medrecord/class/medrecord.class.php');
+dol_include_once('/medrecord/class/medicalrecord.class.php');
 
 /**
  * @var Conf $conf
@@ -59,7 +59,7 @@ $id = GETPOSTINT('id');
 if ($id <= 0 || !$user->hasRight('medrecord', 'read')) {
 	accessforbidden();
 }
-$object = new MedRecord($db);
+$object = new MedicalRecord($db);
 if ($object->fetch($id) <= 0) {
 	accessforbidden($langs->trans("ErrorRecordNotFound"));
 }
