@@ -384,12 +384,12 @@ if ($action == 'create') {
 			}
 		}
 		print '</td></tr>';
-		print '<tr><td class="tdtop">'.$langs->trans("MedRecordChiefComplaint").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->chief_complaint)).'</td></tr>';
-		print '<tr><td class="tdtop">'.$langs->trans("MedRecordPresentIllness").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->present_illness)).'</td></tr>';
-		print '<tr><td class="tdtop">'.$langs->trans("MedRecordPastHistory").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->past_history_snapshot)).'</td></tr>';
+		print '<tr><td class="tdtop">'.$langs->trans("MedRecordChiefComplaint").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->chief_complaint, 0, 1)).'</td></tr>';
+		print '<tr><td class="tdtop">'.$langs->trans("MedRecordPresentIllness").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->present_illness, 0, 1)).'</td></tr>';
+		print '<tr><td class="tdtop">'.$langs->trans("MedRecordPastHistory").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->past_history_snapshot, 0, 1)).'</td></tr>';
 		print '<tr><td>'.$langs->trans("MedRecordTongue").'</td><td>'.dol_escape_htmltag((string) $object->tongue).'</td></tr>';
 		print '<tr><td>'.$langs->trans("MedRecordPulse").'</td><td>'.dol_escape_htmltag((string) $object->pulse).'</td></tr>';
-		print '<tr><td class="tdtop">'.$langs->trans("MedRecordExam").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->exam_note)).'</td></tr>';
+		print '<tr><td class="tdtop">'.$langs->trans("MedRecordExam").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->exam_note, 0, 1)).'</td></tr>';
 		print '</table></div>';
 
 		print '<div class="fichehalfright"><table class="border tableforfield centpercent">';
@@ -400,8 +400,8 @@ if ($action == 'create') {
 		print '</td></tr>';
 		print '<tr><td>'.$langs->trans("MedRecordDiagTcm").'</td><td>'.dol_escape_htmltag((string) $object->tcm_disease_label).'</td></tr>';
 		print '<tr><td>'.$langs->trans("MedRecordSyndrome").'</td><td>'.dol_escape_htmltag((string) $object->tcm_syndrome_label).'</td></tr>';
-		print '<tr><td class="tdtop">'.$langs->trans("MedRecordTreatment").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->treatment_principle)).'</td></tr>';
-		print '<tr><td class="tdtop">'.$langs->trans("MedRecordAdvice").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->advice)).'</td></tr>';
+		print '<tr><td class="tdtop">'.$langs->trans("MedRecordTreatment").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->treatment_principle, 0, 1)).'</td></tr>';
+		print '<tr><td class="tdtop">'.$langs->trans("MedRecordAdvice").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->advice, 0, 1)).'</td></tr>';
 		if ($object->status == MEDRECORD_STATUS_SIGNED || $object->status == MEDRECORD_STATUS_VOIDED) {
 			print '<tr><td>'.$langs->trans("MedRecordSignedBy").'</td><td>'.($object->fk_user_sign ? dol_escape_htmltag(isset($doctors[$object->fk_user_sign]) ? $doctors[$object->fk_user_sign] : '#'.$object->fk_user_sign).' '.dol_print_date($object->date_signed, 'dayhour') : '').'</td></tr>';
 		}
