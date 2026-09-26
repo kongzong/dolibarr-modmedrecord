@@ -124,7 +124,10 @@ class MedRecordTest extends TestCase
 		$tab = file_get_contents($root.'patient_tab.php');
 		$this->assertStringContainsString("hasRight('patient', 'read')", $tab);
 		$this->assertStringContainsString('patient_prepare_head(', $tab, 'reuses modPatient tabs');
-		$this->assertStringContainsString('patient_summary_banner(', $tab, 'reuses modPatient summary');
+		// Design §5.1: inside patient tabs the header is the card/allergies
+		// fiche style; the summary banner is reserved for sub-data detail pages.
+		$this->assertStringContainsString('class="arearef', $tab, 'fiche-style patient header');
+		$this->assertStringNotContainsString('patient_summary_banner(', $tab, 'no summary banner inside patient tabs');
 		$setup = file_get_contents($root.'admin/setup.php');
 		$this->assertStringContainsString('newToken()', $setup);
 	}

@@ -179,6 +179,7 @@ class modMedRecord extends DolibarrModules
 			'titre' => 'MedRecordList',
 			'mainmenu' => 'clinic',
 			'leftmenu' => 'medrecord_list',
+			'prefix' => img_picto('', 'fa-notes-medical_fas_#e53935', 'class="paddingright pictofixedwidth"'),
 			'url' => '/medrecord/list.php',
 			'langs' => 'medrecord@medrecord',
 			'position' => 1100 + $r,

@@ -40,6 +40,9 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.form.class.php';
 dol_include_once('/patient/lib/patient.lib.php');
 dol_include_once('/medrecord/lib/medrecord.lib.php');
 dol_include_once('/medrecord/class/medicalrecord.class.php');
+dol_include_once('/prescription/lib/prescription.lib.php');
+dol_include_once('/pharmacy/lib/pharmacy.lib.php');
+dol_include_once('/clinicpay/lib/clinicpay.lib.php');
 
 /**
  * @var Conf $conf
@@ -407,8 +410,11 @@ if ($action == 'create') {
 		}
 		print '<tr><td>'.$langs->trans("DateCreation").'</td><td>'.dol_print_date($object->date_creation, 'dayhour').'</td></tr>';
 		print '</table>';
+		print '</div></div><div class="clearboth"></div>';
 
-		// Extension point for modPrescription and later modules (spec §3.5)
+		// Extension point for modPrescription and later modules (spec §3.5).
+		// Printed FULL WIDTH below the two half columns - inside fichehalfright
+		// the prescription table gets squeezed to half page width.
 		$parameters = array('object' => $object);
 		$reshook = $hookmanager->executeHooks('printMedRecordCard', $parameters, $object, $action);
 		if ($reshook < 0) {
@@ -418,7 +424,6 @@ if ($action == 'create') {
 		if (trim((string) $hookmanager->resPrint) === '') {
 			print '<div class="opacitymedium" style="margin-top:8px;">'.$langs->trans("MedRecordNoPrescriptionModule").'</div>';
 		}
-		print '</div></div><div class="clearboth"></div>';
 
 		// Patient timeline
 		$timeline = medrecord_timeline($db, $object->fk_patient, 10);
@@ -436,6 +441,64 @@ if ($action == 'create') {
 			}
 			print '</table></div>';
 		}
+
+		// ---- 本次诊疗关联 (visit thread): 收费 / 本次扣卡 (design §5.3, option A:
+		// prescriptions + dispenses are shown by the prescription hook table above) ----
+		$visitBills = clinicpay_bill_list_by_medrecord($db, $object->id);
+		$billIds = array();
+		foreach ($visitBills as $vb) {
+			$billIds[] = (int) $vb->rowid;
+		}
+		$visitConsume = array();
+		if (count($billIds) > 0) {
+			$sqlC = "SELECT l.rowid, l.op, l.value_delta, l.fk_bill, l.date_creation, c.ref as card_ref";
+			$sqlC .= " FROM ".$db->prefix()."clinicpay_card_log as l";
+			$sqlC .= " LEFT JOIN ".$db->prefix()."clinicpay_card as c ON c.rowid = l.fk_card";
+			$sqlC .= " WHERE l.fk_bill IN (".implode(',', $billIds).") AND l.op = 'CONSUME'";
+			$sqlC .= $db->order('l.rowid', 'DESC');
+			$resC = $db->query($sqlC);
+			if ($resC) {
+				while ($lc = $db->fetch_object($resC)) {
+					$visitConsume[] = $lc;
+				}
+				$db->free($resC);
+			}
+		}
+
+		print '<br><div class="ficheaddleft">';
+		print load_fiche_titre($langs->trans("MedRecordVisitThread"), '', 'fa-link');
+		// 收费
+		print '<div class="div-table-responsive-no-min"><table class="noborder centpercent">';
+		print '<tr class="liste_titre"><th colspan="4">'.$langs->trans("MedRecordVisitThreadBill").'</th></tr>';
+		if (empty($visitBills)) {
+			print '<tr><td colspan="4" class="opacitymedium">'.$langs->trans("MedRecordVisitThreadNone").'</td></tr>';
+		}
+		foreach ($visitBills as $vb) {
+			print '<tr class="oddeven">';
+			print '<td><a href="'.dol_buildpath('/clinicpay/bill.php', 1).'?id='.((int) $vb->rowid).'">'.dol_escape_htmltag($vb->ref).'</a></td>';
+			print '<td class="right">'.price($vb->amount_total).'</td>';
+			print '<td>'.dol_print_date($db->jdate($vb->date_creation), 'dayhour').'</td>';
+			print '<td>'.dol_escape_htmltag((string) $vb->channel).'</td>';
+			print '</tr>';
+		}
+		print '</table></div>';
+
+		// 本次扣卡
+		print '<div class="div-table-responsive-no-min"><table class="noborder centpercent">';
+		print '<tr class="liste_titre"><th colspan="3">'.$langs->trans("MedRecordVisitThreadCardConsume").'</th></tr>';
+		if (empty($visitConsume)) {
+			print '<tr><td colspan="3" class="opacitymedium">'.$langs->trans("MedRecordVisitThreadNone").'</td></tr>';
+		}
+		foreach ($visitConsume as $vc) {
+			print '<tr class="oddeven">';
+			print '<td>'.dol_escape_htmltag((string) $vc->card_ref).'</td>';
+			print '<td class="right">'.price($vc->value_delta).'</td>';
+			print '<td>'.dol_print_date($db->jdate($vc->date_creation), 'dayhour').'</td>';
+			print '</tr>';
+		}
+		print '</table></div>';
+
+		print '</div>';
 
 		print dol_get_fiche_end();
 

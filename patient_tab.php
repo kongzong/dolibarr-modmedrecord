@@ -40,6 +40,7 @@ if (!$res) {
 dol_include_once('/patient/class/patientprofile.class.php');
 dol_include_once('/patient/lib/patient.lib.php');
 dol_include_once('/medrecord/lib/medrecord.lib.php');
+dol_include_once('/clinicpay/lib/clinicpay.lib.php');
 
 /**
  * @var DoliDB $db
@@ -64,7 +65,15 @@ llxHeader('', $langs->trans("MedRecordTab"));
 $head = patient_prepare_head($patient);
 print dol_get_fiche_head($head, 'medrecord', $langs->trans("PatientTab"), -1, 'user');
 
-print patient_summary_banner(patient_get_summary($db, $patient->id), array(), 'medrecord');
+// Patient header in the card/allergies fiche style (no summary banner here;
+// the summary mode with quick buttons is for sub-data detail pages, design §5.1)
+$linkback = '<a href="'.dol_buildpath('/patient/list.php', 1).'?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+print '<div class="arearef heightref valignmiddle centpercent">';
+print '<div class="inline-block floatleft refid refidpadding">'.img_picto('', 'user', 'class="pictofixedwidth"').'<strong>'.dol_escape_htmltag($patient->card_no).'</strong>';
+print ($patient->thirdparty ? ' - '.dol_escape_htmltag($patient->thirdparty->name) : '').'</div>';
+print '<div class="inline-block floatright">'.$linkback.'</div>';
+print '<div class="clearboth"></div></div>';
+print '<div class="underbanner clearboth"></div>';
 
 if ($user->hasRight('medrecord', 'write')) {
 	print '<div class="tabsAction">';
@@ -81,10 +90,11 @@ print '<th>'.$langs->trans("MedRecordVisitType").'</th>';
 print '<th>'.$langs->trans("MedRecordDoctor").'</th>';
 print '<th>'.$langs->trans("MedRecordDiagWm").'</th>';
 print '<th>'.$langs->trans("MedRecordDiagTcm").' / '.$langs->trans("MedRecordSyndrome").'</th>';
+print '<th class="right">'.$langs->trans("MedRecordVisitTotal").'</th>';
 print '<th class="center">'.$langs->trans("Status").'</th>';
 print '</tr>';
 if (empty($rows)) {
-	print '<tr><td colspan="7"><span class="opacitymedium">'.$langs->trans("NoRecordFound").'</span></td></tr>';
+	print '<tr><td colspan="8"><span class="opacitymedium">'.$langs->trans("NoRecordFound").'</span></td></tr>';
 }
 foreach ($rows as $r) {
 	$url = dol_buildpath('/medrecord/card.php', 1).'?id='.((int) $r->rowid);
@@ -95,6 +105,7 @@ foreach ($rows as $r) {
 	print '<td>'.dol_escape_htmltag(trim($r->lastname.' '.$r->firstname)).'</td>';
 	print '<td>'.dol_escape_htmltag((string) $r->wm_label).'</td>';
 	print '<td>'.dol_escape_htmltag(trim($r->tcm_disease_label.' '.$r->tcm_syndrome_label)).'</td>';
+	print '<td class="right">'.price(clinicpay_bill_total_by_medrecord($db, $r->rowid)).'</td>';
 	print '<td class="center">'.medrecord_status_badge($r->status).'</td>';
 	print '</tr>';
 }
