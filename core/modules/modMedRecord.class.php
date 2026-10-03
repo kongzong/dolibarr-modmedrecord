@@ -174,7 +174,7 @@ class modMedRecord extends DolibarrModules
 		$r = 0;
 
 		$this->menu[$r++] = array(
-			'fk_menu' => 'fk_mainmenu=clinic',
+			'fk_menu' => 'fk_mainmenu=clinic,fk_leftmenu=clinic_visit',
 			'type' => 'left',
 			'titre' => 'MedRecordList',
 			'mainmenu' => 'clinic',
@@ -199,6 +199,21 @@ class modMedRecord extends DolibarrModules
 			'position' => 1100 + $r,
 			'enabled' => 'isModEnabled("medrecord")',
 			'perms' => '$user->hasRight("medrecord", "write")',
+			'target' => '',
+			'user' => 2,
+		);
+		$this->menu[$r++] = array(
+			'fk_menu' => 'fk_mainmenu=clinic,fk_leftmenu=clinic_report',
+			'type' => 'left',
+			'titre' => 'MedRecordReportVisits',
+			'mainmenu' => 'clinic',
+			'leftmenu' => 'medrecord_report_visits',
+			'prefix' => img_picto('', 'fa-calendar-check_fas_#e53935', 'class="paddingright pictofixedwidth"'),
+			'url' => '/medrecord/report_visits.php',
+			'langs' => 'medrecord@medrecord',
+			'position' => 1502,
+			'enabled' => 'isModEnabled("medrecord")',
+			'perms' => '$user->hasRight("medrecord", "read")',
 			'target' => '',
 			'user' => 2,
 		);
