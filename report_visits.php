@@ -291,7 +291,16 @@ foreach ($rows as $r) {
 	$fkPatient = (int) $r->fk_patient;
 	$g = isset($gaps[$fkPatient]) ? $gaps[$fkPatient] : null;
 	print '<tr class="oddeven">';
-	print '<td>'.dol_escape_htmltag((string) $r->patient_name).'</td>';
+	// The patient name opens the visit list filtered on that patient, so a
+	// follow-up figure can be traced back to the visits behind it.
+	$drill = '/medrecord/list.php?search_fk_patient='.(int) $r->fk_patient;
+	if (GETPOSTINT('search_fromyear')) {
+		$drill .= '&search_fromyear='.GETPOSTINT('search_fromyear').'&search_frommonth='.GETPOSTINT('search_frommonth').'&search_fromday='.GETPOSTINT('search_fromday');
+	}
+	if (GETPOSTINT('search_toyear')) {
+		$drill .= '&search_toyear='.GETPOSTINT('search_toyear').'&search_tomonth='.GETPOSTINT('search_tomonth').'&search_today='.GETPOSTINT('search_today');
+	}
+	print '<td><a href="'.dol_buildpath($drill, 1).'">'.dol_escape_htmltag((string) $r->patient_name).'</a></td>';
 	print '<td>'.dol_escape_htmltag((string) $r->card_no).'</td>';
 	print '<td class="right">'.(int) $r->nb_visit.'</td>';
 	print '<td class="center">'.(int) $r->nb_first.'</td>';

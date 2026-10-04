@@ -44,7 +44,11 @@ class MedRecordTest extends TestCase
 			$this->assertStringContainsString('[4] = '.$perm, $content, 'one-level permission '.$perm);
 		}
 		$this->assertStringNotContainsString('[5] = ', $content);
-		$this->assertStringContainsString("'fk_menu' => 'fk_mainmenu=clinic'", $content, 'hangs under the shared Clinic top menu');
+		// 2026-10-03: the Clinic top menu was split into 5 left-menu groups, so
+		// the entries no longer hang directly off fk_mainmenu=clinic.
+		$this->assertStringContainsString("'fk_menu' => 'fk_mainmenu=clinic,fk_leftmenu=clinic_visit'", $content, 'hangs under the shared Clinic top menu, visits group');
+		$this->assertStringContainsString("'fk_mainmenu=clinic,fk_leftmenu=medrecord_list'", $content, 'second level keeps its own leftmenu id');
+		$this->assertStringContainsString("'fk_mainmenu=clinic,fk_leftmenu=clinic_report'", $content, 'visit report lives in the reports group');
 		$this->assertStringNotContainsString("'type' => 'top'", $content, 'must not create a second top menu');
 		$this->assertStringContainsString("patient:+medrecord:", $content, 'tab on the patient card via modPatient 0.1.1');
 		$this->assertStringContainsString("'hooks' => array('medrecordcard')", $content, 'hook context for modPrescription');
