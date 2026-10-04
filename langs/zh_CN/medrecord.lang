@@ -121,3 +121,10 @@ MedRecordVisitDateLast=末次就诊
 MedRecordVisitGapAvg=平均间隔天数
 MedRecordVisitGapMin=最短间隔天数
 MedRecordVisitGapMax=最长间隔天数
+
+MedRecordPerformance=医师业绩
+MedRecordPerfVisits=接诊次数
+MedRecordPerfPatients=就诊患者
+MedRecordPerfPerPatient=人均就诊
+MedRecordPerfAmount=确认收入
+MedRecordPerfPrescriptions=处方数

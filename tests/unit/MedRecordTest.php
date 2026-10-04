@@ -269,4 +269,19 @@ class MedRecordTest extends TestCase
 		}
 		return $keys;
 	}
+
+	/**
+	 * 2026-10-04: doctor performance report. Revenue and prescriptions are
+	 * aggregated in subqueries: joining the bill table directly would multiply
+	 * the visit count by the number of bills of each visit.
+	 */
+	public function testPerformanceReportAggregatesBeforeJoining()
+	{
+		$page = file_get_contents(__DIR__.'/../../report_performance.php');
+		$this->assertStringContainsString('LEFT JOIN (SELECT fk_medrecord, SUM(amount_total) AS amount', $page, 'revenue aggregated per visit');
+		$this->assertStringContainsString('LEFT JOIN (SELECT fk_medrecord, COUNT(*) AS nb', $page, 'prescriptions aggregated per visit');
+		$this->assertStringContainsString('COUNT(DISTINCT m.rowid) AS nb_visit', $page, 'visits counted distinctly');
+		$this->assertStringContainsString('search_doctor=', $page, 'doctor drills into their visit list');
+		$this->assertStringContainsString("medrecord/report_performance.php", file_get_contents(__DIR__.'/../../core/modules/modMedRecord.class.php'), 'menu entry');
+	}
 }

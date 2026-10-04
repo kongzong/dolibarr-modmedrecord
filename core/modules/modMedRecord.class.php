@@ -217,6 +217,21 @@ class modMedRecord extends DolibarrModules
 			'target' => '',
 			'user' => 2,
 		);
+		$this->menu[$r++] = array(
+			'fk_menu' => 'fk_mainmenu=clinic,fk_leftmenu=clinic_report',
+			'type' => 'left',
+			'titre' => 'MedRecordPerformance',
+			'mainmenu' => 'clinic',
+			'leftmenu' => 'medrecord_performance',
+			'prefix' => img_picto('', 'fa-user-doctor_fas_#00897b', 'class="paddingright pictofixedwidth"'),
+			'url' => '/medrecord/report_performance.php',
+			'langs' => 'medrecord@medrecord',
+			'position' => 1505,
+			'enabled' => 'isModEnabled("medrecord")',
+			'perms' => '$user->hasRight("medrecord", "read")',
+			'target' => '',
+			'user' => 2,
+		);
 	}
 
 	/**
