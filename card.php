@@ -215,10 +215,10 @@ function medrecord_print_form_rows(MedicalRecord $o, $isCreate)
 
 	print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("MedRecordDoctor").'</td><td>';
 	$selDoctor = GETPOSTISSET('fk_doctor') ? GETPOSTINT('fk_doctor') : ($o->fk_doctor ? $o->fk_doctor : (isset($doctors[$user->id]) ? $user->id : 0));
-	print $form->selectarray('fk_doctor', $doctors, $selDoctor, 1, 0, 0, '', 0, 0, 0, '', 'minwidth200');
+	print $form->selectarray('fk_doctor', $doctors, $selDoctor, -1, 0, 0, '', 0, 0, 0, '', 'minwidth200');
 	print '</td></tr>';
 	print '<tr><td>'.$langs->trans("MedRecordDepartment").'</td><td>';
-	print $form->selectarray('fk_department', $departments, GETPOSTISSET('fk_department') ? GETPOSTINT('fk_department') : (int) $o->fk_department, 1, 0, 0, '', 0, 0, 0, '', 'minwidth200');
+	print $form->selectarray('fk_department', $departments, GETPOSTISSET('fk_department') ? GETPOSTINT('fk_department') : (int) $o->fk_department, -1, 0, 0, '', 0, 0, 0, '', 'minwidth200');
 	print '</td></tr>';
 	print '<tr><td>'.$langs->trans("MedRecordVisitDate").'</td><td>';
 	$ts = GETPOSTISSET('visit_dateyear') ? dol_mktime(GETPOSTINT('visit_datehour'), GETPOSTINT('visit_datemin'), 0, GETPOSTINT('visit_datemonth'), GETPOSTINT('visit_dateday'), GETPOSTINT('visit_dateyear')) : ($o->visit_date ? $o->visit_date : dol_now());
@@ -294,10 +294,10 @@ $(function() {
 </script>';
 	print '</td></tr>';
 	print '<tr><td>'.$langs->trans("MedRecordDiagTcm").'</td><td>';
-	print $form->selectarray('tcm_disease_code', $tcmDiseases, GETPOSTISSET('tcm_disease_code') ? GETPOST('tcm_disease_code', 'alphanohtml') : (string) $o->tcm_disease_code, 1, 0, 0, '', 0, 0, 0, '', 'minwidth200', 1);
+	print $form->selectarray('tcm_disease_code', $tcmDiseases, GETPOSTISSET('tcm_disease_code') ? GETPOST('tcm_disease_code', 'alphanohtml') : (string) $o->tcm_disease_code, -1, 0, 0, '', 0, 0, 0, '', 'minwidth200', 1);
 	print '</td></tr>';
 	print '<tr><td>'.$langs->trans("MedRecordSyndrome").'</td><td>';
-	print $form->selectarray('tcm_syndrome_code', $tcmSyndromes, GETPOSTISSET('tcm_syndrome_code') ? GETPOST('tcm_syndrome_code', 'alphanohtml') : (string) $o->tcm_syndrome_code, 1, 0, 0, '', 0, 0, 0, '', 'minwidth200', 1);
+	print $form->selectarray('tcm_syndrome_code', $tcmSyndromes, GETPOSTISSET('tcm_syndrome_code') ? GETPOST('tcm_syndrome_code', 'alphanohtml') : (string) $o->tcm_syndrome_code, -1, 0, 0, '', 0, 0, 0, '', 'minwidth200', 1);
 	print '</td></tr>';
 
 	print '<tr class="liste_titre"><td colspan="2">'.$langs->trans("MedRecordPlan").'</td></tr>';
