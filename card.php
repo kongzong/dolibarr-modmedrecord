@@ -512,6 +512,9 @@ if ($action == 'create') {
 		if ($canWrite && $object->status == MEDRECORD_STATUS_SIGNED) {
 			print dolGetButtonAction($langs->trans("MedRecordFollowUp"), '', 'default', $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=followup&token='.newToken(), '', 1);
 		}
+		if ($canWrite) {
+			print dolGetButtonAction($langs->trans("FollowupPlanNew"), '', 'default', dol_buildpath('/medrecord/followup.php', 1).'?fk_medrecord='.$object->id.'&action=create&token='.newToken(), '', 1);
+		}
 		if ($object->canVoid($user)) {
 			print dolGetButtonAction($langs->trans("MedRecordVoid"), '', 'delete', $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=void&token='.newToken(), '', 1);
 		}
