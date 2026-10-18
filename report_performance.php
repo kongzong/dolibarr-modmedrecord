@@ -135,6 +135,15 @@ if ($action === 'export') {
 				(int) $r->nb_prescription,
 			));
 		}
+		// Total row, like the other clinic reports, so the CSV can be summed safely.
+		fputcsv($fh, array(
+			$langs->trans("MedRecordPerfTotal"),
+			$totVisit,
+			'',
+			'',
+			number_format($totAmount, 2, '.', ''),
+			$totPresc,
+		));
 		fclose($fh);
 		top_httphead('text/csv; charset=UTF-8');
 		header('Content-Description: File Transfer');
@@ -177,6 +186,11 @@ print '<span class="badge badge-status4">'.$langs->trans("MedRecordPerfVisits").
 print '<span class="badge badge-status1">'.$langs->trans("MedRecordPerfAmount").' '.price($totAmount).'</span> ';
 print '<span class="badge badge-status2">'.$langs->trans("MedRecordPerfPrescriptions").' '.$totPresc.'</span>';
 print '</div>';
+
+// Revenue here only covers bills that carry a visit link (fk_medrecord), so it
+// is usually smaller than the charge report net amount. Say so, otherwise the
+// two reports look inconsistent.
+print '<div class="opacitymedium" style="margin-bottom:6px;">'.dol_escape_htmltag($langs->trans("MedRecordPerfAmountHint")).'</div>';
 
 print '<div class="div-table-responsive-no-min"><table class="noborder centpercent">';
 print '<tr class="liste_titre">';

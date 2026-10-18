@@ -151,3 +151,6 @@ FollowupPlanFromRecord=来自就诊
 FollowupPlanErrDate=请选择随访日期
 
 Back=返回
+
+MedRecordPerfTotal=合计
+MedRecordPerfAmountHint=「确认收入」仅统计已关联就诊记录的收费单；未关联就诊的收费（如散客零售）不计入本表，因此会小于收费报表的净收入。

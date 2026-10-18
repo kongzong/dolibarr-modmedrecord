@@ -150,3 +150,6 @@ FollowupPlanFromRecord=From visit
 FollowupPlanErrDate=Please pick a due date
 
 Back=Back
+
+MedRecordPerfTotal=Total
+MedRecordPerfAmountHint="Confirmed revenue" counts only charge bills linked to a visit record. Bills without a visit link (e.g. walk-in retail) are not included, so this figure is lower than the net amount in the charge report.
