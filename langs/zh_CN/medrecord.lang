@@ -149,3 +149,5 @@ FollowupPlanToday=今日
 FollowupPlanEmpty=暂无随访计划
 FollowupPlanFromRecord=来自就诊
 FollowupPlanErrDate=请选择随访日期
+
+Back=返回

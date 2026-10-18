@@ -111,7 +111,7 @@ foreach ($rows as $r) {
 
 // ---- CSV (must run before any output) -----------------------------------------
 if ($action === 'export') {
-	$csvName = 'medrecord_performance_'.dol_now('%Y%m%d%H%M%S');
+	$csvName = 'medrecord_performance_'.dol_print_date(dol_now(), '%Y%m%d%H%M%S');
 	$csvDir = empty($conf->medrecord->dir_temp) ? DOL_DOCUMENT_ROOT.'/dolibarr_documents/temp/' : $conf->medrecord->dir_temp;
 	$csvFile = $csvDir.'/'.$csvName.'.csv';
 	$fh = fopen($csvFile, 'w');

@@ -148,3 +148,5 @@ FollowupPlanToday=Today
 FollowupPlanEmpty=No follow-up plans yet
 FollowupPlanFromRecord=From visit
 FollowupPlanErrDate=Please pick a due date
+
+Back=Back

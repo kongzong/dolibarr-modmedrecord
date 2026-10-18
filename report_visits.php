@@ -143,7 +143,7 @@ foreach ($rows as $r) {
 
 // ---- CSV (must run before any output) -----------------------------------------
 if ($action === 'export') {
-	$csvName = 'medrecord_report_visits'.dol_now('%Y%m%d%H%M%S');
+	$csvName = 'medrecord_report_visits'.dol_print_date(dol_now(), '%Y%m%d%H%M%S');
 	// Module temp dir: always inside the open_basedir whitelist (d:/dolibarr/...).
 	$csvDir = empty($conf->medrecord->dir_temp) ? DOL_DOCUMENT_ROOT.'/dolibarr_documents/temp/' : $conf->medrecord->dir_temp;
 	$csvFile = $csvDir.'/'.$csvName.'.csv';
