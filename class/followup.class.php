@@ -108,6 +108,28 @@ class FollowupPlan extends CommonObject
 	}
 
 	/**
+	 * Normalise a due date into the 'YYYY-MM-DD' string the DATE column expects.
+	 * Callers pass either a timestamp (dol_mktime) or an already formatted
+	 * string; without this an int would reach MySQL as a raw number and blow up
+	 * with "Incorrect date value".
+	 *
+	 * @param	mixed	$value	Timestamp, numeric string or date string
+	 * @return	string			'YYYY-MM-DD', '' when the value is unusable
+	 */
+	private function normalizeDueDate($value)
+	{
+		if ($value === null || $value === '') {
+			return '';
+		}
+		if (is_numeric($value)) {
+			$ts = (int) $value;
+			return $ts > 0 ? dol_print_date($ts, '%Y-%m-%d') : '';
+		}
+		$ts = strtotime((string) $value);
+		return ($ts !== false && $ts > 0) ? dol_print_date($ts, '%Y-%m-%d') : '';
+	}
+
+	/**
 	 * Create the plan row.
 	 *
 	 * @param	User	$user	Author
@@ -115,10 +137,12 @@ class FollowupPlan extends CommonObject
 	 */
 	public function create($user)
 	{
-		if ((int) $this->fk_patient <= 0 || !in_array($this->ftype, self::$types, true) || empty($this->due_date)) {
+		$due = $this->normalizeDueDate($this->due_date);
+		if ((int) $this->fk_patient <= 0 || !in_array($this->ftype, self::$types, true) || $due === '') {
 			$this->error = 'BadValueForPatientTypeOrDate';
 			return -1;
 		}
+		$this->due_date = $due;
 		$prefix = $this->db->prefix();
 		$sql = "INSERT INTO ".$prefix."medrecord_followup (entity, fk_patient, fk_medrecord, due_date, ftype, note, status, fk_user_creat, date_creation)";
 		$sql .= " VALUES (".getDolGlobalInt('entity', 1).", ".((int) $this->fk_patient).", ";
