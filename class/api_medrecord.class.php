@@ -56,7 +56,7 @@ class Medrecord extends DolibarrApi
 	/**
 	 * List records.
 	 *
-	 * @url	GET records
+	 * @url	GET /
 	 *
 	 * @param	string	$q			Record no. / card no. / patient name
 	 * @param	int		$patient	Patient rowid
@@ -113,7 +113,7 @@ class Medrecord extends DolibarrApi
 	/**
 	 * Get one record (medical data: audited as MEDRECORD_READ).
 	 *
-	 * @url	GET records/{id}
+	 * @url	GET {id}
 	 *
 	 * @param	int		$id		Record rowid
 	 * @return	array<string,mixed>
@@ -139,7 +139,7 @@ class Medrecord extends DolibarrApi
 	 *         "treatment_principle": "...", "advice": "...", "fk_ref_medrecord": 0,
 	 *         "diagnoses": [ { "code": "J06.900", "label": "", "is_primary": 1 } ] }
 	 *
-	 * @url	POST records
+	 * @url	POST /
 	 *
 	 * @param	array	$request_data	Body
 	 * @return	array<string,mixed>
@@ -167,7 +167,7 @@ class Medrecord extends DolibarrApi
 	 * Update a draft (or a signed record within the configured lock window).
 	 * Body: same fields as POST except fk_patient / fk_ref_medrecord.
 	 *
-	 * @url	PUT records/{id}
+	 * @url	PUT {id}
 	 *
 	 * @param	int		$id				Record rowid
 	 * @param	array	$request_data	Body
@@ -196,7 +196,7 @@ class Medrecord extends DolibarrApi
 	/**
 	 * Sign a draft (attending doctor or admin with 'sign').
 	 *
-	 * @url	POST records/{id}/sign
+	 * @url	POST {id}/sign
 	 *
 	 * @param	int		$id		Record rowid
 	 * @return	array<string,mixed>
@@ -220,7 +220,7 @@ class Medrecord extends DolibarrApi
 	/**
 	 * Void a record. Body: { "reason": "..." } (required). Nothing is deleted.
 	 *
-	 * @url	POST records/{id}/void
+	 * @url	POST {id}/void
 	 *
 	 * @param	int		$id				Record rowid
 	 * @param	array	$request_data	Body
