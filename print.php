@@ -102,7 +102,7 @@ if ($object->status == MEDRECORD_STATUS_VOIDED) {
 }
 print '<div class="head">';
 print '<span>'.$langs->trans("MedRecordRef").': <strong>'.dol_escape_htmltag($object->ref).'</strong></span>';
-print '<span>'.$langs->trans("MedRecordVisitDate").': '.dol_print_date($object->visit_date, 'dayhour').'</span>';
+print '<span>'.$langs->trans("MedRecordVisitDate").': '.dol_print_date($object->visit_date, '%Y-%m-%d %H:%M').'</span>';
 print '<span>'.$langs->trans($object->visit_type == 2 ? "MedRecordVisitFollow" : "MedRecordVisitFirst").'</span>';
 print '</div>';
 
@@ -155,13 +155,13 @@ print '<tr><th>'.$langs->trans("MedRecordAdvice").'</th><td>'.dol_escape_htmltag
 print '</table>';
 
 print '<div class="sign">';
-print '<span>'.$langs->trans("MedRecordSignedBy").': '.($object->fk_user_sign ? dol_escape_htmltag(isset($doctors[$object->fk_user_sign]) ? $doctors[$object->fk_user_sign] : '').' '.dol_print_date($object->date_signed, 'dayhour') : '______________').'</span>';
+print '<span>'.$langs->trans("MedRecordSignedBy").': '.($object->fk_user_sign ? dol_escape_htmltag(isset($doctors[$object->fk_user_sign]) ? $doctors[$object->fk_user_sign] : '').' '.dol_print_date($object->date_signed, '%Y-%m-%d %H:%M') : '______________').'</span>';
 print '<span>'.medrecord_status_label($object->status).'</span>';
 print '</div>';
 
 print '<div class="foot">';
 print '<span>'.$langs->trans("MedRecordPrintedBy").': '.dol_escape_htmltag($printedBy).'</span>';
-print '<span>'.dol_print_date(dol_now(), 'dayhoursec').'</span>';
+print '<span>'.dol_print_date(dol_now(), '%Y-%m-%d %H:%M:%S').'</span>';
 print '<span>'.dol_escape_htmltag($object->ref).'</span>';
 print '</div>';
 print '</div>';

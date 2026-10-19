@@ -668,7 +668,7 @@ class MedicalRecord extends CommonObject
 			}
 		}
 		if ((int) $old->visit_date !== (int) $this->visit_date) {
-			$changes['visit_date'] = array('old' => dol_print_date($old->visit_date, 'dayhour'), 'new' => dol_print_date($this->visit_date, 'dayhour'));
+			$changes['visit_date'] = array('old' => dol_print_date($old->visit_date, '%Y-%m-%d %H:%M'), 'new' => dol_print_date($this->visit_date, '%Y-%m-%d %H:%M'));
 		}
 		$fmt = function ($list) {
 			$out = array();

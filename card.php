@@ -373,9 +373,9 @@ if ($action == 'create') {
 		}
 
 		print '<div class="fichecenter"><div class="fichehalfleft"><table class="border tableforfield centpercent">';
-		print '<tr><td class="titlefield">'.$langs->trans("MedRecordDoctor").'</td><td>'.dol_escape_htmltag(isset($doctors[$object->fk_doctor]) ? $doctors[$object->fk_doctor] : '#'.$object->fk_doctor).'</td></tr>';
+		print '<tr><td class="titlefield">'.$langs->trans("MedRecordDoctor").'</td><td>'.dol_escape_htmltag(patient_doctor_label($db, $object->fk_doctor, $doctors)).'</td></tr>';
 		print '<tr><td>'.$langs->trans("MedRecordDepartment").'</td><td>'.dol_escape_htmltag(isset($departments[$object->fk_department]) ? $departments[$object->fk_department] : '').'</td></tr>';
-		print '<tr><td>'.$langs->trans("MedRecordVisitDate").'</td><td>'.dol_print_date($object->visit_date, 'dayhour').'</td></tr>';
+		print '<tr><td>'.$langs->trans("MedRecordVisitDate").'</td><td>'.dol_print_date($object->visit_date, '%Y-%m-%d %H:%M').'</td></tr>';
 		print '<tr><td>'.$langs->trans("MedRecordVisitType").'</td><td>'.$langs->trans($object->visit_type == 2 ? "MedRecordVisitFollow" : "MedRecordVisitFirst");
 		if ($object->fk_ref_medrecord) {
 			$refRec = new MedicalRecord($db);
@@ -403,12 +403,12 @@ if ($action == 'create') {
 		print '<tr><td class="tdtop">'.$langs->trans("MedRecordTreatment").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->treatment_principle, 0, 1)).'</td></tr>';
 		print '<tr><td class="tdtop">'.$langs->trans("MedRecordAdvice").'</td><td>'.dol_nl2br(dol_escape_htmltag((string) $object->advice, 0, 1)).'</td></tr>';
 		if ($object->status == MEDRECORD_STATUS_SIGNED || $object->status == MEDRECORD_STATUS_VOIDED) {
-			print '<tr><td>'.$langs->trans("MedRecordSignedBy").'</td><td>'.($object->fk_user_sign ? dol_escape_htmltag(isset($doctors[$object->fk_user_sign]) ? $doctors[$object->fk_user_sign] : '#'.$object->fk_user_sign).' '.dol_print_date($object->date_signed, 'dayhour') : '').'</td></tr>';
+			print '<tr><td>'.$langs->trans("MedRecordSignedBy").'</td><td>'.($object->fk_user_sign ? dol_escape_htmltag(patient_doctor_label($db, $object->fk_user_sign, $doctors)).' '.dol_print_date($object->date_signed, '%Y-%m-%d %H:%M') : '').'</td></tr>';
 		}
 		if ($object->status == MEDRECORD_STATUS_VOIDED) {
-			print '<tr><td>'.$langs->trans("MedRecordVoidReason").'</td><td class="error">'.dol_escape_htmltag((string) $object->void_reason).' <span class="opacitymedium">('.dol_print_date($object->date_void, 'dayhour').')</span></td></tr>';
+			print '<tr><td>'.$langs->trans("MedRecordVoidReason").'</td><td class="error">'.dol_escape_htmltag((string) $object->void_reason).' <span class="opacitymedium">('.dol_print_date($object->date_void, '%Y-%m-%d %H:%M').')</span></td></tr>';
 		}
-		print '<tr><td>'.$langs->trans("DateCreation").'</td><td>'.dol_print_date($object->date_creation, 'dayhour').'</td></tr>';
+		print '<tr><td>'.$langs->trans("DateCreation").'</td><td>'.dol_print_date($object->date_creation, '%Y-%m-%d %H:%M').'</td></tr>';
 		print '</table>';
 		print '</div></div><div class="clearboth"></div>';
 
@@ -477,7 +477,7 @@ if ($action == 'create') {
 			print '<tr class="oddeven">';
 			print '<td><a href="'.dol_buildpath('/clinicpay/bill.php', 1).'?id='.((int) $vb->rowid).'">'.dol_escape_htmltag($vb->ref).'</a></td>';
 			print '<td class="right">'.price($vb->amount_total).'</td>';
-			print '<td>'.dol_print_date($db->jdate($vb->date_creation), 'dayhour').'</td>';
+			print '<td>'.dol_print_date($db->jdate($vb->date_creation), '%Y-%m-%d %H:%M').'</td>';
 			print '<td>'.dol_escape_htmltag((string) $vb->channel).'</td>';
 			print '</tr>';
 		}
@@ -493,7 +493,7 @@ if ($action == 'create') {
 			print '<tr class="oddeven">';
 			print '<td>'.dol_escape_htmltag((string) $vc->card_ref).'</td>';
 			print '<td class="right">'.price($vc->value_delta).'</td>';
-			print '<td>'.dol_print_date($db->jdate($vc->date_creation), 'dayhour').'</td>';
+			print '<td>'.dol_print_date($db->jdate($vc->date_creation), '%Y-%m-%d %H:%M').'</td>';
 			print '</tr>';
 		}
 		print '</table></div>';

@@ -155,7 +155,7 @@ foreach ($rows as $row) {
 	print '<tr class="oddeven"'.((int) $row->status === MEDRECORD_STATUS_VOIDED ? ' style="opacity:.55"' : '').'>';
 	print '<td><a href="'.$url.'">'.img_picto('', 'fa-notes-medical', 'class="pictofixedwidth"').dol_escape_htmltag($row->ref).'</a></td>';
 	print '<td><a href="'.dol_buildpath('/patient/card.php', 1).'?id='.((int) $row->fk_patient).'">'.dol_escape_htmltag($row->patient_name).'</a> <span class="opacitymedium">'.dol_escape_htmltag($row->card_no).'</span></td>';
-	print '<td>'.dol_print_date($db->jdate($row->visit_date), 'dayhour').'</td>';
+	print '<td>'.dol_print_date($db->jdate($row->visit_date), '%Y-%m-%d %H:%M').'</td>';
 	print '<td>'.dol_escape_htmltag(trim($row->lastname.' '.$row->firstname)).'</td>';
 	print '<td>'.dol_escape_htmltag(trim(($row->wm_label ? $row->wm_label.' ' : '').$row->tcm_disease_label.' '.$row->tcm_syndrome_label)).'</td>';
 	print '<td class="center">'.medrecord_status_badge($row->status).'</td>';

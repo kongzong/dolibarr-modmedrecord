@@ -100,7 +100,7 @@ foreach ($rows as $r) {
 	$url = dol_buildpath('/medrecord/card.php', 1).'?id='.((int) $r->rowid);
 	print '<tr class="oddeven"'.((int) $r->status === MEDRECORD_STATUS_VOIDED ? ' style="opacity:.55"' : '').'>';
 	print '<td><a href="'.$url.'">'.dol_escape_htmltag($r->ref).'</a></td>';
-	print '<td>'.dol_print_date($db->jdate($r->visit_date), 'dayhour').'</td>';
+	print '<td>'.dol_print_date($db->jdate($r->visit_date), '%Y-%m-%d %H:%M').'</td>';
 	print '<td>'.$langs->trans((int) $r->visit_type === 2 ? "MedRecordVisitFollow" : "MedRecordVisitFirst").'</td>';
 	print '<td>'.dol_escape_htmltag(trim($r->lastname.' '.$r->firstname)).'</td>';
 	print '<td>'.dol_escape_htmltag((string) $r->wm_label).'</td>';
