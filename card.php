@@ -162,14 +162,14 @@ if ($action == 'update' && $object->id > 0) {
 	$action = 'edit';
 }
 
-if ($action == 'confirm_sign' && $confirm == 'yes' && $object->id > 0) {
+if ($action == 'confirm_sign' && $confirm == 'yes' && GETPOST('token', 'alpha') != '' && $object->id > 0) {
 	$result = $object->sign($user);
 	setEventMessages($langs->trans($result > 0 ? "MedRecordSigned" : $object->error), null, $result > 0 ? 'mesgs' : 'errors');
 	header("Location: ".$_SERVER["PHP_SELF"]."?id=".$object->id);
 	exit;
 }
 
-if ($action == 'confirm_void' && $confirm == 'yes' && $object->id > 0) {
+if ($action == 'confirm_void' && $confirm == 'yes' && GETPOST('token', 'alpha') != '' && $object->id > 0) {
 	$result = $object->void($user, GETPOST('void_reason', 'alphanohtml'));
 	setEventMessages($langs->trans($result > 0 ? "MedRecordVoided" : $object->error), null, $result > 0 ? 'mesgs' : 'errors');
 	header("Location: ".$_SERVER["PHP_SELF"]."?id=".$object->id);
